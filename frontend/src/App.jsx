@@ -461,17 +461,6 @@ export default function App() {
               <option value="Sierra">Sierra (10 Deptos)</option>
               <option value="Selva">Selva (5 Deptos)</option>
             </select>
-          </div>
-        </div>
-
-        <div className="sidebar-footer-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#101828' }}>Base Relacional 3FN</span>
-          </div>
-          <p style={{ fontSize: '0.7rem', color: '#667085', margin: 0 }}>
-            417,551 microdatos procesados (INEI)
-          </p>
         </div>
       </aside>
 
