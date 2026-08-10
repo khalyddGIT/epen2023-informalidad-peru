@@ -1,0 +1,30 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node.js & Frontend dependencies & build outputs
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+.vite/
+
+# Logs & Environment
+*.log
+backend/*.log
+frontend/*.log
+.env
+.env.local
+
+# Large files exceeding GitHub 100MB file limit
+*.zip
+*.csv
+874-Modulo76.zip
+EPEN 2023 BD_Publicación Dpto.csv
+
+# IDE / OS specific
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
