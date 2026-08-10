@@ -35,8 +35,14 @@ def get_db_connection():
         print("Error al conectar a PostgreSQL:", e)
         return None
 
-# Cargar datos para el modelo ML en memoria
-BASE_DIR = r"d:\Escritorio\Data\processed_tables"
+# Cargar datos para el modelo ML en memoria (Búsqueda dinámica de directorio)
+POSSIBLE_DIRS = [
+    os.path.join(os.path.dirname(__file__), "..", "processed_tables"),
+    os.path.join(os.path.dirname(__file__), "..", "etl", "processed_tables"),
+    r"d:\Escritorio\Data\processed_tables"
+]
+BASE_DIR = next((d for d in POSSIBLE_DIRS if os.path.exists(d)), POSSIBLE_DIRS[0])
+
 fact = pd.read_csv(os.path.join(BASE_DIR, "fact_empleo.csv"))
 dim_dept = pd.read_csv(os.path.join(BASE_DIR, "dim_departamento.csv"))
 dim_demog = pd.read_csv(os.path.join(BASE_DIR, "dim_demografia.csv"))

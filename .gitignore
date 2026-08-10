@@ -23,6 +23,11 @@ frontend/*.log
 874-Modulo76.zip
 EPEN 2023 BD_Publicación Dpto.csv
 
+# Temporary scratch and cache files
+scratch/
+.tmp/
+*.tmp
+
 # IDE / OS specific
 .DS_Store
 Thumbs.db

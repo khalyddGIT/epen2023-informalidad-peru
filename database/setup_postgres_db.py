@@ -37,7 +37,10 @@ try:
     conn = psycopg2.connect(dbname=TARGET_DB, user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT)
     cursor = conn.cursor()
     
-    sql_script_path = r"d:\Escritorio\Data\schema_postgresql.sql"
+    sql_script_path = os.path.join(os.path.dirname(__file__), "schema_postgresql.sql")
+    if not os.path.exists(sql_script_path):
+        sql_script_path = r"d:\Escritorio\Data\database\schema_postgresql.sql"
+
     with open(sql_script_path, 'r', encoding='utf-8') as f:
         sql_ddl = f.read()
         
@@ -46,7 +49,12 @@ try:
     print("[OK] Tablas, Índices, Vistas y Procedimiento Almacenado creados en PostgreSQL.")
 
     # 3. Poblar las tablas de dimensión
-    tables_dir = r"d:\Escritorio\Data\processed_tables"
+    POSSIBLE_TABLES_DIRS = [
+        os.path.join(os.path.dirname(__file__), "..", "processed_tables"),
+        os.path.join(os.path.dirname(__file__), "processed_tables"),
+        r"d:\Escritorio\Data\processed_tables"
+    ]
+    tables_dir = next((d for d in POSSIBLE_TABLES_DIRS if os.path.exists(d)), POSSIBLE_TABLES_DIRS[0])
     
     # Dim_Departamento
     df_dept = pd.read_csv(os.path.join(tables_dir, "dim_departamento.csv"))
