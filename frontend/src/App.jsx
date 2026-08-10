@@ -461,6 +461,7 @@ export default function App() {
               <option value="Sierra">Sierra (10 Deptos)</option>
               <option value="Selva">Selva (5 Deptos)</option>
             </select>
+          </div>
         </div>
       </aside>
 
