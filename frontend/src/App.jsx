@@ -401,14 +401,12 @@ export default function App() {
                 <Activity size={18} />
                 <span>Dashboard General</span>
               </div>
-              <span className="badge-count">KPIs</span>
             </li>
             <li className={`nav-item ${activeTab === 'mapa' ? 'active' : ''}`} onClick={() => setActiveTab('mapa')}>
               <div className="nav-item-link">
                 <Map size={18} />
                 <span>Mapa Interactivo Perú</span>
               </div>
-              <span className="badge-count">25</span>
             </li>
             <li className={`nav-item ${activeTab === 'radar' ? 'active' : ''}`} onClick={() => setActiveTab('radar')}>
               <div className="nav-item-link">
@@ -421,7 +419,6 @@ export default function App() {
                 <Zap size={18} />
                 <span>Simulador What-If ML</span>
               </div>
-              <span className="badge-count" style={{ background: '#fef3c7', color: '#d97706' }}>ML</span>
             </li>
             <li className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => setActiveTab('analytics')}>
               <div className="nav-item-link">
@@ -434,7 +431,6 @@ export default function App() {
                 <Calculator size={18} />
                 <span>Modelo Predictivo OLS</span>
               </div>
-              <span className="badge-count" style={{ background: '#ecfdf5', color: '#059669' }}>3FN</span>
             </li>
           </ul>
 
