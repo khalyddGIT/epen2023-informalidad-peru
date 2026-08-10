@@ -97,6 +97,23 @@ python database/setup_postgres_db.py
 
 ---
 
+### 4. Generación de Gráficos e Imágenes Analíticas (Python)
+
+Para ejecutar el pipeline de generación de imágenes de gráficos (guardados automáticamente en la carpeta `graficos/`):
+
+```bash
+python etl/analisis_y_modelo.py
+```
+
+**Gráficos e imágenes generados automáticamente:**
+- `graficos/tasa_informalidad_dpto.png`: Tasa de informalidad laboral (%) por departamento.
+- `graficos/ingreso_promedio_dpto.png`: Ingreso promedio mensual (S/.) por departamento.
+- `graficos/brecha_ingreso_genero.png`: Brecha salarial por género y rango etario.
+- `graficos/tendencia_empleo_mensual.png`: Evolución mensual de la población ocupada 2023.
+- `graficos/modelo_prediccion_regresion.png`: Modelo predictivo OLS y proyección quinquenal 2024–2028.
+
+---
+
 ## ⚡ Características Principales del Dashboard
 
 1. **🗺️ Mapa Interactivo del Perú (25 Departamentos):** Vectorial de alta definición con fichas sociodemográficas flotantes y filtrado al clic.
@@ -110,3 +127,4 @@ python database/setup_postgres_db.py
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Libre uso educativo y académico.
+
