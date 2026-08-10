@@ -438,12 +438,6 @@ export default function App() {
             </select>
           </div>
         </div>
-
-        <div style={{ borderTop: '1px solid #eaecf0', paddingTop: '1rem' }}>
-          <div style={{ fontSize: '0.75rem', color: '#98a2b3', marginBottom: '0.25rem' }}>EESTP La Pontificia</div>
-          <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#101828' }}>Yoniver Cusi Huerta</div>
-          <div style={{ fontSize: '0.75rem', color: '#667085' }}>Modelamiento de BD (3FN)</div>
-        </div>
       </aside>
 
       {/* CONTENIDO PRINCIPAL */}
