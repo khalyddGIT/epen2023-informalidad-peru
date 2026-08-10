@@ -275,27 +275,33 @@ export default function App() {
       return sortOrder === 'asc' ? valA - valB : valB - valA;
     });
 
-  // Gráfico Radar Data
+  // Gráfico Radar Data (Métricas normalizadas a escala 0 - 100)
   const radarData = [
-    { subject: 'Formalidad %', fullMark: 100 },
-    { subject: 'Ingreso Medio (S/.)', fullMark: 100 },
-    { subject: 'Encuestados (x500)', fullMark: 100 },
-    { subject: 'Productividad Relativa', fullMark: 100 }
+    { subject: 'Tasa Formalidad (%)', metric: 'formalidad', fullMark: 100 },
+    { subject: 'Índice de Ingresos', metric: 'ingreso', fullMark: 100 },
+    { subject: 'Representatividad Muestral', metric: 'muestra', fullMark: 100 },
+    { subject: 'Índice Desempeño Laboral', metric: 'desempeno', fullMark: 100 }
   ];
+
+  const maxMuestraCount = Math.max(...departamentos.map(d => d.total_encuestados || 1), 1);
+  const maxIngresoVal = Math.max(...departamentos.map(d => d.ingreso_medio || 1), 1);
 
   const radarChartData = radarData.map(rItem => {
     const item = { subject: rItem.subject };
     selectedRadarDepts.forEach(dId => {
       const dept = departamentos.find(d => d.id_departamento === dId);
       if (dept) {
-        if (rItem.subject === 'Formalidad %') {
-          item[dept.nombre] = Math.round((100 - dept.tasa_informalidad));
-        } else if (rItem.subject === 'Ingreso Medio (S/.)') {
-          item[dept.nombre] = Math.min(100, Math.round(dept.ingreso_medio / 25));
-        } else if (rItem.subject === 'Encuestados (x500)') {
-          item[dept.nombre] = Math.min(100, Math.round(dept.total_encuestados / 500));
+        const key = `dept_${dept.id_departamento}`;
+        if (rItem.metric === 'formalidad') {
+          item[key] = Math.max(0, Math.min(100, Math.round(100 - dept.tasa_informalidad)));
+        } else if (rItem.metric === 'ingreso') {
+          item[key] = Math.max(0, Math.min(100, Math.round((dept.ingreso_medio / maxIngresoVal) * 100)));
+        } else if (rItem.metric === 'muestra') {
+          item[key] = Math.max(0, Math.min(100, Math.round(Math.sqrt(dept.total_encuestados / maxMuestraCount) * 100)));
         } else {
-          item[dept.nombre] = Math.round((dept.ingreso_medio / 1514.93) * 50);
+          const formScore = (100 - dept.tasa_informalidad);
+          const ingScore = (dept.ingreso_medio / maxIngresoVal) * 100;
+          item[key] = Math.max(0, Math.min(100, Math.round((formScore * 0.5) + (ingScore * 0.5))));
         }
       }
     });
@@ -767,8 +773,8 @@ export default function App() {
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', margin: '1rem 0' }}>
-                {departamentos.slice(0, 15).map(dept => {
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', margin: '1rem 0', maxHeight: '160px', overflowY: 'auto', padding: '0.2rem' }}>
+                {departamentos.map(dept => {
                   const isSelected = selectedRadarDepts.includes(dept.id_departamento);
                   return (
                     <button
@@ -807,7 +813,7 @@ export default function App() {
                         <Radar
                           key={dId}
                           name={dept.nombre}
-                          dataKey={dept.nombre}
+                          dataKey={`dept_${dept.id_departamento}`}
                           stroke={radarColors[idx % radarColors.length]}
                           fill={radarColors[idx % radarColors.length]}
                           fillOpacity={0.25}
@@ -818,6 +824,47 @@ export default function App() {
                     <ReTooltip />
                   </RadarChart>
                 </ResponsiveContainer>
+              </div>
+
+              {/* Tabla Resumen de Comparación */}
+              <div style={{ marginTop: '1.5rem', borderTop: '1px dashed #eaecf0', paddingTop: '1rem' }}>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#101828', marginBottom: '0.75rem' }}>
+                  📊 Cuadro Comparativo de Departamentos Seleccionados
+                </h4>
+                <div style={{ overflowX: 'auto' }}>
+                  <table className="dept-table" style={{ width: '100%', fontSize: '0.82rem' }}>
+                    <thead>
+                      <tr>
+                        <th>Departamento</th>
+                        <th>Macro-Región</th>
+                        <th>Tasa Informalidad</th>
+                        <th>Tasa Formalidad</th>
+                        <th>Ingreso Medio</th>
+                        <th>Encuestados</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedRadarDepts.map(dId => {
+                        const dept = departamentos.find(d => d.id_departamento === dId);
+                        if (!dept) return null;
+                        return (
+                          <tr key={dId}>
+                            <td style={{ fontWeight: 600, color: '#101828' }}>{dept.nombre}</td>
+                            <td>{dept.region_natural}</td>
+                            <td>
+                              <span className={`badge ${dept.tasa_informalidad > 75 ? 'badge-danger' : dept.tasa_informalidad > 65 ? 'badge-warning' : 'badge-success'}`}>
+                                {dept.tasa_informalidad}%
+                              </span>
+                            </td>
+                            <td style={{ fontWeight: 600, color: '#6c5ce7' }}>{(100 - dept.tasa_informalidad).toFixed(1)}%</td>
+                            <td style={{ fontWeight: 600, color: '#10b981' }}>S/. {dept.ingreso_medio.toLocaleString('es-PE', { minimumFractionDigits: 2 })}</td>
+                            <td>{dept.total_encuestados.toLocaleString('es-PE')} hab.</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
