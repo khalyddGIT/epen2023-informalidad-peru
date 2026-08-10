@@ -365,22 +365,33 @@ export default function App() {
         </div>
       )}
 
-      {/* SIDEBAR NAVEGACIÓN */}
+      {/* SIDEBAR NAVEGACIÓN MEJORADO */}
       <aside className="sidebar">
         <div>
           <div className="sidebar-logo">
             <div className="sidebar-logo-icon">EP</div>
-            <span>EPEN 2023</span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ lineHeight: 1.1, fontSize: '1.15rem', fontFamily: 'Plus Jakarta Sans', fontWeight: 800 }}>EPEN 2023</span>
+              <span style={{ fontSize: '0.68rem', color: '#6c5ce7', fontWeight: 700, letterSpacing: '0.04em' }}>BIG DATA PERÚ</span>
+            </div>
           </div>
 
           <div className="sidebar-search">
-            <Search size={16} />
+            <Search size={15} />
             <input 
               type="text" 
               placeholder="Buscar por departamento..." 
               value={tableSearch}
               onChange={(e) => setTableSearch(e.target.value)}
             />
+            {tableSearch && (
+              <button 
+                onClick={() => setTableSearch('')} 
+                style={{ position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)', border: 'none', background: 'none', cursor: 'pointer', color: '#98a2b3', fontSize: '0.75rem', fontWeight: 700 }}
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           <div className="nav-section-title">MENÚ PRINCIPAL</div>
@@ -390,12 +401,14 @@ export default function App() {
                 <Activity size={18} />
                 <span>Dashboard General</span>
               </div>
+              <span className="badge-count">KPIs</span>
             </li>
             <li className={`nav-item ${activeTab === 'mapa' ? 'active' : ''}`} onClick={() => setActiveTab('mapa')}>
               <div className="nav-item-link">
                 <Map size={18} />
                 <span>Mapa Interactivo Perú</span>
               </div>
+              <span className="badge-count">25</span>
             </li>
             <li className={`nav-item ${activeTab === 'radar' ? 'active' : ''}`} onClick={() => setActiveTab('radar')}>
               <div className="nav-item-link">
@@ -408,6 +421,7 @@ export default function App() {
                 <Zap size={18} />
                 <span>Simulador What-If ML</span>
               </div>
+              <span className="badge-count" style={{ background: '#fef3c7', color: '#d97706' }}>ML</span>
             </li>
             <li className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => setActiveTab('analytics')}>
               <div className="nav-item-link">
@@ -420,23 +434,44 @@ export default function App() {
                 <Calculator size={18} />
                 <span>Modelo Predictivo OLS</span>
               </div>
+              <span className="badge-count" style={{ background: '#ecfdf5', color: '#059669' }}>3FN</span>
             </li>
           </ul>
 
-          <div className="nav-section-title" style={{ marginTop: '1.5rem' }}>FILTROS RÁPIDOS</div>
-          <div style={{ padding: '0 0.5rem' }}>
-            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475467' }}>Macro-Región:</label>
+          <div className="nav-section-title" style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>FILTROS RÁPIDOS</span>
+            {selectedRegionFilter !== 'Todas' && (
+              <button 
+                onClick={() => setSelectedRegionFilter('Todas')} 
+                style={{ border: 'none', background: 'none', color: '#6c5ce7', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Limpiar
+              </button>
+            )}
+          </div>
+          <div style={{ padding: '0 0.2rem' }}>
+            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475467' }}>Macro-Región Natural:</label>
             <select 
               value={selectedRegionFilter}
               onChange={(e) => setSelectedRegionFilter(e.target.value)}
-              style={{ width: '100%', padding: '0.45rem', borderRadius: '6px', border: '1px solid #eaecf0', marginTop: '0.25rem', fontSize: '0.85rem' }}
+              className="sidebar-select"
             >
-              <option value="Todas">Todas las Regiones</option>
-              <option value="Costa">Costa</option>
-              <option value="Sierra">Sierra</option>
-              <option value="Selva">Selva</option>
+              <option value="Todas">Todas las Regiones (25)</option>
+              <option value="Costa">Costa (10 Deptos)</option>
+              <option value="Sierra">Sierra (10 Deptos)</option>
+              <option value="Selva">Selva (5 Deptos)</option>
             </select>
           </div>
+        </div>
+
+        <div className="sidebar-footer-card">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#101828' }}>Base Relacional 3FN</span>
+          </div>
+          <p style={{ fontSize: '0.7rem', color: '#667085', margin: 0 }}>
+            417,551 microdatos procesados (INEI)
+          </p>
         </div>
       </aside>
 
